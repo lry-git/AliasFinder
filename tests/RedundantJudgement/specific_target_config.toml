@@ -1,0 +1,27 @@
+# Please read RedundantJudgement.md first!
+
+# test for specific_test.cpp
+# [specific_target_1]
+# function_fullname = "foo_1 int int int"
+# target_param_idx = [0, 2]
+
+# [specific_target_2]
+# function_fullname = "foo_3"
+# target_var = ["int * p1"]
+
+# [specific_target_4]
+# function_fullname = "foo_1 int int int"
+# target_var = ["int [10] array_1", "_Bool [5][6] array_2"]
+
+# [specific_target_3]
+# function_fullname = "foo_2 int"
+# target_param_idx = [0]
+
+# test for hw-case
+[specific_target_5]
+function_fullname = "VisitArray const Teacher * int"
+target_param_idx= [1]
+
+[specific_target_6]
+function_fullname = "BookType1Hdl Student * Book *"
+target_var= ["Student * stu_p"]

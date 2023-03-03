@@ -1,0 +1,82 @@
+CheckerEnable
+{
+	TemplateChecker = true
+	CallGraphChecker = true
+	SplitBasicBlockwithFunCall = true
+	CFGTest = false
+	PointToAnalysis = true
+	TaintChecker = false
+	ArrayBoundChecker = true
+	LoopUpbound = true
+}
+
+PrintLog
+{
+	level = 0
+	taintChecker = false
+	TemplateChecker = false
+	arrayBound = false
+}
+
+Framework
+{
+	queue_size = 600
+}
+
+TemplateChecker
+{
+	request_fun = 2
+}
+
+CFG
+{
+	SplitBasicBlockwithFunCall = true
+	SplitBasicBlockwithCXXNew = false
+	SplitBasicBlockwithCXXConstruct = false
+}
+
+CFGTest
+{
+	request_fun = 2
+  	CFGTest = true
+  	ICFGTest = false
+}
+
+CallGraph
+{
+	showDestructor = true
+	showFunctionPtr = true
+	showLambda = true
+	inlineAndTemplate = true
+	showLibFunc = true
+	ignoreNoCalledSystemHeader = false
+	printToConsole =false
+}
+
+P2A
+{
+	analysisSystemHeader = false
+
+	Point_to_test1 = false
+	Point_to_test2 = false
+	Alias_test1 = false
+	Alias_test2 = false
+	Alias_test3 = false
+}
+ArrayBound
+{
+	Z3Timeout = 0
+	SimpleCheckEnable = true
+        checkdepth = 1
+        IndexIgnoreConditionalOperator = true
+        SimpleExprCheckOnly = true
+	Z3CheckEnable = false
+	DebugMode = false
+	FunctionName = ""
+}
+pathToReport
+{
+	path = ./
+}
+
+

@@ -1,0 +1,33 @@
+TaintCheckerConfig
+{
+    CheckGlobalVariable = false
+    PrintLog = 3
+    BlackList = false
+    WhiteList = false
+    TaintSourceConfig = false
+}
+
+BlackList
+{
+    testBlackFunction = 0
+    testBlackFunction_2 = 1
+}
+
+WhiteList
+{
+    testWhiteFunction = 1
+    testWhiteFunction_2 = 0
+}
+
+TaintSourceConfig
+{
+    ProcessBook
+    {
+        src_pos = {1, 4, [1]}
+    }
+
+    TestPassClass
+    {
+        src = {1}
+    }
+}

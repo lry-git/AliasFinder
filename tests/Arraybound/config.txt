@@ -1,0 +1,93 @@
+CheckerEnable
+{
+	TemplateChecker = false
+	CallGraphChecker = true
+	SplitBasicBlockwithFunCall = true
+	CFGTest = false
+	ICFGTest = false
+    PointToAnalysis = true
+	TaintChecker = false
+	ArrayBoundChecker = true
+}
+
+PrintLog
+{
+	level = 3
+	taintChecker = false
+	TemplateChecker = false
+	arrayBound = true
+	recursiveCall = false
+	divideChecker = false
+	memoryOPChecker = false
+}
+
+Framework
+{
+	queue_size = 600
+}
+
+TemplateChecker
+{
+	request_fun = 2
+}
+
+CFG
+{
+	SplitBasicBlockwithFunCall = true
+	SplitBasicBlockwithCXXNew = false
+	SplitBasicBlockwithCXXConstruct = false
+}
+
+CFGTest
+{
+	request_fun = 2
+  	CFGTest = false
+  	ICFGTest = false
+}
+
+CallGraph
+{
+	showDestructor = true
+	showFunctionPtr = true
+	showLambda = true
+	inlineAndTemplate = true
+	showLibFunc = true
+	ignoreNoCalledSystemHeader = false
+	printToConsole =false
+}
+
+P2A
+{
+	analysisSystemHeader = false
+
+	Point_to_test1 = false
+	Point_to_test2 = false
+	Alias_test1 = false
+	Alias_test2 = false
+	Alias_test3 = false
+}
+ArrayBound
+{
+    #z3 TIMEOUT ms
+	Z3Timeout = 600 
+	#function check timeout s,Function_TIMEOUT <=0 means we do not set timeout for each function
+	Function_TIMEOUT = 0
+	checkdepth = 2
+    SolvePathConstraints = true
+	ReportPathConstraints = false
+	ReportPath = false
+    CheckTaintArrayOnly = false
+    CheckVectorOutBoundEnable = true
+	PointToAnalysis = true
+	AliasMaxPathLength = 10
+	AliasMaxPathNumber = 10
+	DebugMode = false
+	DebugFunctionName = ""
+}
+
+pathToReport
+{
+	path = ./
+}
+
+

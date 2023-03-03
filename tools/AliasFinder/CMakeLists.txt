@@ -1,0 +1,13 @@
+add_executable(alias-finder main.cpp)
+
+# specify the libs that the target 'TemplateChecker' needs
+# !!! DO NOT change the order of the libs !!!
+# libs will be linked in this order, and changing the order could lead to link errors
+target_link_libraries(alias-finder
+  alias
+  ${CLANG_LIBS}
+  ${LLVM_LIBS}  
+)
+
+set_target_properties( alias-finder PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )

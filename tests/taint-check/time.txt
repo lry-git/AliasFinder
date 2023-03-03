@@ -1,0 +1,5 @@
+Starting CallGraphChecker check
+Time: 0min1sec
+End of CallGraphChecker check
+-----------------------------------------------------------
+Starting TaintCheck
