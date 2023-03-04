@@ -1170,6 +1170,8 @@ void common::printLog(std::string logString, common::CheckerName cn, int level,
       llvm::errs() << logString;
     }
     break;
+  default:
+    return;
   }
 }
 

@@ -128,7 +128,8 @@ const CFGBlock *getBlockWithID(const std::unique_ptr<CFG> &cfg,unsigned id);
 std::vector<CFGBlock *> getNonRecursiveSucc(CFGBlock *curBlock);
 std::string print(const Stmt* stmt);
 
-template <class T> void dumpLog(T &t, CheckerName cn, int level, Config &c) {
+template <class T> 
+void dumpLog(T &t, CheckerName cn, int level, Config &c) {
   auto block = c.getOptionBlock("PrintLog");
   int l = atoi(block.find("level")->second.c_str());
   switch (cn) {
@@ -147,6 +148,8 @@ template <class T> void dumpLog(T &t, CheckerName cn, int level, Config &c) {
       t.dump();
     }
     break;
+  default:
+    return;
   }
 }
 

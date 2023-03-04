@@ -70,10 +70,12 @@ set(CLANG_LIBS
 )
 
 # define OTHER_LIBS: other libs to be used in link time
-# set(OTHER_LIBS pthread z dl curses)
+set(OTHER_LIBS pthread z dl curses)
 
 #find_package(Z3 REQUIRED config HINTS "${Z3_DIR}/cmake")
-set(Z3LINK "${Z3_DIR}/bin/libz3.so")
+
+# set(Z3LINK "${Z3_DIR}/build/libz3.so")
+
 #set(Z3LINK "/home/gfj/z3/build/libz3.so")
 #message(Status "${Z3LINK}")
 
