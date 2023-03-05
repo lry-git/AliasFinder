@@ -69,6 +69,19 @@ set(CLANG_LIBS
   clangBasic
 )
 
+# set(CLANG_LIBS
+#   clangTooling
+#   clangToolingCore
+#   clangFrontendTool
+#   clangFrontend 
+#   clangStaticAnalyzerFrontend
+#   clangStaticAnalyzerCore
+#   clangAnalysis
+#   clangAST
+#   clangASTMatchers
+#   clangBasic
+# )
+
 # define OTHER_LIBS: other libs to be used in link time
 set(OTHER_LIBS pthread z dl curses)
 

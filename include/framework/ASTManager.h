@@ -8,7 +8,7 @@
 // #include <clang/Analysis/CFG.h>
 #include <clang/Frontend/ASTUnit.h>
 
-#include "../utils/FieldVariableInfo.h"
+#include "utils/FieldVariableInfo.h"
 #include "ASTElement.h"
 #include "Config.h"
 

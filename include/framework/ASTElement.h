@@ -7,7 +7,7 @@
 #include <clang/Frontend/ASTUnit.h>
 
 #include "Common.h"
-#include "../utils/FieldVariableInfo.h"
+#include "utils/FieldVariableInfo.h"
 
 using namespace clang;
 
