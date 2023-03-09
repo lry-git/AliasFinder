@@ -1,6 +1,8 @@
-UbuntuLLVM="https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.0/clang+llvm-12.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz"
-LLVMHome="llvm-12.0.0.obj"
 HOME=$(pwd)
+LLVMHome="llvm-12.0.0.obj"
+UbuntuLLVM="https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.0/clang+llvm-12.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz"
+# export LLVM_BUILD="/home/lry/mnt-projects/llvm-12.0.0/build"
+
 ########
 # Download LLVM if need be.
 #######
@@ -8,9 +10,9 @@ if [ ! -d "$LLVM_BUILD" ]
 then
     if [ ! -d "$LLVMHome" ]
     then
-        # echo "Downloading LLVM binary for $OSDisplayName"
+        echo "Downloading LLVM binary for $UbuntuLLVM"
         # generic_download_file "$urlLLVM" llvm.tar.xz
-        proxychains wget -c "$UbuntuLLVM" -O "llvm.tar.xz"
+        wget -c "$UbuntuLLVM" -O "llvm.tar.xz"
         mkdir -p "./$LLVMHome" && tar -xf llvm.tar.xz -C "./$LLVMHome" --strip-components 1
         rm llvm.tar.xz
     fi
@@ -30,4 +32,4 @@ cd $build_dir
 # cmake -DLLVM_PREFIX=${LLVM_PREFIX} -D Z3_DIR=/path/to/z3/ -D CMAKE_BUILD_TYPE=Release ..
 # use LLVM build directory
 cmake -DLLVM_BUILD=$LLVM_BUILD -DZ3_DIR=z3.obj -DCMAKE_BUILD_TYPE=$build_type ..
-make -j 24
+make -j 8

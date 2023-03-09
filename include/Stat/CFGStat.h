@@ -4,15 +4,20 @@
 #include "framework/ASTManager.h"
 #include "framework/CallGraph.h"
 #include "framework/Config.h"
+#include "Stat/AliasStat.h"
+#include "Stat/FileParser.h"
 
 class CFGStat{
     ASTResource *resource;
     ASTManager *manager;
     CallGraph *callgraph;
     Config *configure;
+    AliasStat _aliasStat;
+    CSVParser _fileParser;
+
 public:
-    CFGStat(ASTResource *resource, ASTManager *manager,
-            CallGraph *callgraph, Config *configure){
+    CFGStat(ASTResource *resource, ASTManager *manager,CallGraph *callgraph, 
+            Config *configure, string csvIn, string csvOut):_fileParser(csvIn,csvOut){
         this->resource=resource;
         this->manager=manager;
         this->callgraph=callgraph;
@@ -39,6 +44,9 @@ public:
 
     void statCFGs();
 
+    void computeDist(AliasPair & aliasPair);
+
+    void dumpAlias();
 };
 
 #endif // end of CFG_STAT_H

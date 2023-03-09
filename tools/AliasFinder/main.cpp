@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <thread>
 
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <clang/Tooling/JSONCompilationDatabase.h>
@@ -19,32 +20,75 @@
 
 using namespace clang;
 using namespace llvm;
+using namespace std;
+
+string midCsvPrefix="middle/";
+vector<pair<string,string>> worklist;
+
+// void parseAlias(int index, char *configPath){
+void parseAlias(int index, string configPath, string outPath){
+  string which=worklist[index].first;
+  string astList=worklist[index].second;
+  std::vector<std::string> ASTs = initialize(astList);
+
+  Config configure(configPath);
+
+  ASTResource resource;
+  ASTManager manager(ASTs, resource, configure);
+  CallGraph callgraph(manager, resource, configure.getOptionBlock("CallGraph"));;
+  string csvIn=CSVParser::joinPath(midCsvPrefix,which+".csv");
+  string csvOut=CSVParser::joinPath(outPath,which+".csv");
+  CFGStat cfgStat(&resource, &manager, &callgraph, &configure, csvIn, csvOut);
+  // cfgStat.dumpCFGs();
+  cfgStat.statCFGs();
+  cfgStat.dumpAlias();
+}
 
 int main(int argc, const char *argv[])
 {
-  ofstream process_file("time.txt");
-  if (!process_file.is_open())
-  {
-    cerr << "can't open time.txt\n";
-    return -1;
-  }
+  // ofstream process_file("time.txt");
+  // if (!process_file.is_open())
+  // {
+  //   cerr << "can't open time.txt\n";
+  //   return -1;
+  // }
   clock_t startCTime, endCTime;
   startCTime = clock();
 
   LLVMInitializeNativeTarget();
   LLVMInitializeNativeAsmParser();
+  vector<thread> threads;
+  ifstream fin("worklist.txt");
+  string line;
+  while(getline(fin,line)){
+    auto pos=line.find(' ');
+    string which=line.substr(0,pos);
+    string astList=line.substr(pos+1);
+    worklist.emplace_back(which,astList);
+  }
+  // int n=8;
+  for(int i = 0; i < worklist.size(); i++){
+      // thread t(parseAlias, i, argv[1]);
+      // thread t(parseAlias, i, ' ');
+      threads.push_back(move(thread(parseAlias, i, argv[1], argv[2])));
+      // threads.emplace_back(move(t));
+  }
+  for(int i = 0; i < worklist.size(); i++){
+    threads[i].join();
+  }
+  // std::vector<std::string> ASTs = initialize(argv[1]);
 
-  std::vector<std::string> ASTs = initialize(argv[1]);
+  // Config configure(argv[2]);
 
-  Config configure(argv[2]);
+  // ASTResource resource;
+  // ASTManager manager(ASTs, resource, configure);
+  // CallGraph callgraph(manager, resource, configure.getOptionBlock("CallGraph"));;
 
-  ASTResource resource;
-  ASTManager manager(ASTs, resource, configure);
-  CallGraph callgraph(manager, resource, configure.getOptionBlock("CallGraph"));;
+  // CFGStat cfgStat(&resource, &manager, &callgraph, &configure);
+  // // cfgStat.dumpCFGs();
+  // cfgStat.statCFGs();
 
-  CFGStat cfgStat(&resource, &manager, &callgraph, &configure);
-  // cfgStat.dumpCFGs();
-  cfgStat.statCFGs();
+  
   
   // if (enable.find("CallGraphChecker")->second == "true")
   // {
@@ -120,8 +164,8 @@ int main(int argc, const char *argv[])
   endCTime = clock();
   unsigned sec = unsigned((endCTime - startCTime) / CLOCKS_PER_SEC);
   unsigned min = sec / 60;
-  process_file << "-----------------------------------------------------------"
-                  "\nTotal time: "
-               << min << "min" << sec % 60 << "sec" << endl;
+  // process_file << "-----------------------------------------------------------"
+  //                 "\nTotal time: "
+  //              << min << "min" << sec % 60 << "sec" << endl;
   return 0;
 }
