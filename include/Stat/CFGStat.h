@@ -1,19 +1,22 @@
 #ifndef CFG_STAT_H
 #define CFG_STAT_H
-
+#include <unordered_set>
 #include "framework/ASTManager.h"
 #include "framework/CallGraph.h"
 #include "framework/Config.h"
 #include "Stat/AliasStat.h"
 #include "Stat/FileParser.h"
+using namespace std;
 
 class CFGStat{
     ASTResource *resource;
     ASTManager *manager;
     CallGraph *callgraph;
     Config *configure;
+    unsigned _dist;
     AliasStat _aliasStat;
     CSVParser _fileParser;
+    unordered_set<const CFGBlock *> _visited;
 
 public:
     CFGStat(ASTResource *resource, ASTManager *manager,CallGraph *callgraph, 
@@ -44,7 +47,9 @@ public:
 
     void statCFGs();
 
-    void computeDist(AliasPair & aliasPair);
+    void dfsCFG(const CFGBlock *blockCur,const CFGBlock *blockEnd,unsigned distCur);
+
+    unsigned computeDist(AliasPair & aliasPair);
 
     void dumpAlias();
 };

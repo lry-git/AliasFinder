@@ -63,13 +63,36 @@ void CFGStat::statCFGs() {
     }
 }
 
-void CFGStat::computeDist(AliasPair & aliasPair){
-    MyStmt *myStmt1=_aliasStat.getMyStmt(aliasPair.defuse1);
-    MyStmt *myStmt2=_aliasStat.getMyStmt(aliasPair.defuse2);
+unsigned CFGStat::computeDist(AliasPair & aliasPair){
+    MyStmt *myStmt1=_aliasStat.getMyStmt(aliasPair.defuse1); // line num is bigger
+    MyStmt *myStmt2=_aliasStat.getMyStmt(aliasPair.defuse2); // line num is smaller
     if (!myStmt1 || !myStmt2){
+        return 0;
+    }
+    
+    _visited.clear();
+    auto block1=myStmt1->getCFGBlock();
+    auto block2=myStmt2->getCFGBlock();
+    _dist=myStmt1->getOffset()-myStmt2->getOffset();
+    dfsCFG(block2,block1,_dist);
+    aliasPair.distance=_dist;
+    return _dist;
+    // aliasPair.distance=myStmt1->getOffset()-myStmt2->getOffset();
+}
+
+void CFGStat::dfsCFG(const CFGBlock *blockCur,const CFGBlock *blockEnd,unsigned distCur){
+    if(_visited.count(blockCur)){
         return;
     }
-    aliasPair.distance=myStmt1->getOffset()-myStmt2->getOffset();
+    if(blockCur==blockEnd){
+        _dist=distCur;
+        return;
+    }
+    _visited.insert(blockCur);
+    distCur+=blockCur->size();
+    for(auto sIt=blockCur->succ_begin();sIt!=blockCur->succ_end();sIt++){
+        dfsCFG(*sIt,blockEnd,distCur);
+    }
 }
 
 void CFGStat::dumpAlias(){
