@@ -22,22 +22,28 @@ using namespace clang;
 using namespace llvm;
 using namespace std;
 
-string midCsvPrefix="middle/";
+struct Args{
+  string configPath, midPath, outPath;
+};
+
+// string midCsvPrefix="middle/";
+Args globArgs;
 vector<pair<string,string>> worklist;
 
 // void parseAlias(int index, char *configPath){
-void parseAlias(int index, string configPath, string outPath){
+// void parseAlias(int index, string configPath, string outPath){
+void parseAlias(int index){
   string which=worklist[index].first;
   string astList=worklist[index].second;
   std::vector<std::string> ASTs = initialize(astList);
 
-  Config configure(configPath);
+  Config configure(globArgs.configPath);
 
   ASTResource resource;
   ASTManager manager(ASTs, resource, configure);
   CallGraph callgraph(manager, resource, configure.getOptionBlock("CallGraph"));;
-  string csvIn=CSVParser::joinPath(midCsvPrefix,which+".csv");
-  string csvOut=CSVParser::joinPath(outPath,which+".csv");
+  string csvIn=CSVParser::joinPath(globArgs.midPath,which+".csv");
+  string csvOut=CSVParser::joinPath(globArgs.outPath,which+".csv");
   CFGStat cfgStat(&resource, &manager, &callgraph, &configure, csvIn, csvOut);
   // cfgStat.dumpCFGs();
   cfgStat.statCFGs();
@@ -67,10 +73,12 @@ int main(int argc, const char *argv[])
     worklist.emplace_back(which,astList);
   }
   // int n=8;
+  globArgs.configPath = argv[1];
+  globArgs.midPath = argv[2];
+  globArgs.outPath = argv[3];
   for(int i = 0; i < worklist.size(); i++){
       // thread t(parseAlias, i, argv[1]);
-      // thread t(parseAlias, i, ' ');
-      threads.push_back(move(thread(parseAlias, i, argv[1], argv[2])));
+      threads.push_back(move(thread(parseAlias, i)));
       // threads.emplace_back(move(t));
   }
   for(int i = 0; i < worklist.size(); i++){
