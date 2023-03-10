@@ -12,6 +12,9 @@ void CFGStat::statCFGs() {
         auto sourceRange=FD->getSourceRange();
         auto srcBegin=sourceRange.getBegin();
         auto fileName=srcMgr.getFilename(srcBegin);
+        if(srcMgr.isInSystemHeader(srcBegin) || fileName.empty())
+            continue;
+        
         unsigned line=srcMgr.getSpellingLineNumber(srcBegin);
         llvm::outs()<<"file name: "<<fileName<<" and line: "<<line<<'\n';
         for (auto I = cfg->begin(); I != cfg->end() ; I++) {
@@ -23,8 +26,8 @@ void CFGStat::statCFGs() {
             for(auto eleIt=block->begin(); eleIt!=block->end(); eleIt++){
                 auto& ele=*eleIt;
                 auto kind=ele.getKind();
-                std::cout<<"block element is : ";
-                eleIt->dump();
+                std::cout<<"block element is : \n";
+                // eleIt->dump();
                 if(kind==CFGElement::Kind::Statement){
                     CFGStmt cfgStmt = ele.castAs<CFGStmt>();
                     const Stmt *stmt = cfgStmt.getStmt();
