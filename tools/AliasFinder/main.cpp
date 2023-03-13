@@ -35,18 +35,19 @@ vector<pair<string,string>> worklist;
 void parseAlias(int index){
   string which=worklist[index].first;
   string astList=worklist[index].second;
-  std::vector<std::string> ASTs = initialize(astList);
+  // std::vector<std::string> ASTs = initialize(astList);
 
-  Config configure(globArgs.configPath);
+  // Config configure(globArgs.configPath);
 
-  ASTResource resource;
-  ASTManager manager(ASTs, resource, configure);
-  CallGraph callgraph(manager, resource, configure.getOptionBlock("CallGraph"));;
+  // ASTResource resource;
+  // ASTManager manager(ASTs, resource, configure);
+  // CallGraph callgraph(manager, resource, configure.getOptionBlock("CallGraph"));;
   string csvIn=CSVParser::joinPath(globArgs.midPath,which+".csv");
   string csvOut=CSVParser::joinPath(globArgs.outPath,which+".csv");
-  CFGStat cfgStat(&resource, &manager, &callgraph, &configure, csvIn, csvOut);
+  // CFGStat cfgStat(&resource, &manager, &callgraph, &configure, csvIn, csvOut);
+  CFGStat cfgStat(csvIn, csvOut);
   // cfgStat.dumpCFGs();
-  cfgStat.statCFGs();
+  cfgStat.statCFGs(astList);
   cfgStat.dumpAlias();
 }
 
@@ -82,7 +83,7 @@ int main(int argc, const char *argv[])
       // threads.push_back(thread(parseAlias, i));
       parseAlias(i);
   }
-  for(int i = 0; i < worklist.size(); i++){
+  for(int i = 0; i < threads.size(); i++){
     threads[i].join();
   }
   // std::vector<std::string> ASTs = initialize(argv[1]);
