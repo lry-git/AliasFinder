@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(safehw)
+project(ALIAS)
 
 set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti -fvisibility=hidden -fvisibility-inlines-hidden -fsanitize=address -fsanitize-recover=address")
@@ -91,6 +91,9 @@ set(OTHER_LIBS pthread z dl curses)
 
 #set(Z3LINK "/home/gfj/z3/build/libz3.so")
 #message(Status "${Z3LINK}")
+
+# add_compile_options(-fno-omit-frame-pointer -fsanitize=address)
+# add_link_options(-fno-omit-frame-pointer -fsanitize=address)
 
 # include_directories(include ${LLVM_INCLUDE} "${Z3_DIR}/src/api/c++" "${Z3_DIR}/src/api/")
 include_directories(include ${LLVM_INCLUDE})

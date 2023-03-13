@@ -1,16 +1,22 @@
 #include "Stat/CFGStat.h"
 
 void CFGStat::statCFGs() {
-    for(auto fun : callgraph->getTopLevelFunctions()){
+    for(auto fun : resource->getFunctions()){
         auto& cfg=manager->getCFG(fun);
-        if(cfg==NULL){
+        if(cfg==NULL || fun==NULL){
             continue;
         }
         // dumpCFG(cfg);
         auto FD=fun->getFunctionDecl();
-        auto &srcMgr=FD->getASTContext().getSourceManager();
-        auto sourceRange=FD->getSourceRange();
-        auto srcBegin=sourceRange.getBegin();
+        
+        // if(!FD || !FD->hasBody()){
+        if(!FD){
+            continue;
+        }
+        // FD->hasBody();
+        auto &srcMgr=FD->getASTContext().getSourceManager();        
+        // auto sourceRange=FD->getSourceRange();
+        auto srcBegin=FD->getBeginLoc();
         auto fileName=srcMgr.getFilename(srcBegin);
         if(srcMgr.isInSystemHeader(srcBegin) || fileName.empty())
             continue;
@@ -84,7 +90,7 @@ unsigned CFGStat::computeDist(AliasPair & aliasPair){
 }
 
 void CFGStat::dfsCFG(const CFGBlock *blockCur,const CFGBlock *blockEnd,unsigned distCur){
-    if(_visited.count(blockCur)){
+    if(!blockCur || _visited.count(blockCur)){
         return;
     }
     if(blockCur==blockEnd){

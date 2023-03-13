@@ -78,8 +78,9 @@ int main(int argc, const char *argv[])
   globArgs.outPath = argv[3];
   for(int i = 0; i < worklist.size(); i++){
       // thread t(parseAlias, i, argv[1]);
-      threads.push_back(move(thread(parseAlias, i)));
       // threads.emplace_back(move(t));
+      // threads.push_back(thread(parseAlias, i));
+      parseAlias(i);
   }
   for(int i = 0; i < worklist.size(); i++){
     threads[i].join();

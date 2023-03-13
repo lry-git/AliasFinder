@@ -248,6 +248,11 @@ ASTManager::ASTManager(std::vector<std::string> &ASTs, ASTResource &resource,
   int cnt = 0;
   int size = ASTs.size();
   for (std::string AST : ASTs) {
+    std::ifstream finTmp(AST);
+    if(!finTmp.good()){
+      continue;
+    }
+    finTmp.close();
     ASTFile *AF = resource.addASTFile(AST);
     std::unique_ptr<ASTUnit> AU = common::loadFromASTFile(AST);
     std::vector<FunctionDecl *> functions =

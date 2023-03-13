@@ -1,3 +1,6 @@
+CC=gcc
+CXX=g++
+
 HOME=$(pwd)
 LLVMHome="llvm-12.0.0.obj"
 UbuntuLLVM="https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.0/clang+llvm-12.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz"
